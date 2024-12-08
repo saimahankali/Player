@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embed YouTube Video</title>
+    <style>
+        /* Styling for video container */
+        #video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        iframe {
+            border: none;
+            width: 560px;
+            height: 315px;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 300px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #ff6347;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <label for="youtube-url">Enter YouTube Video URL:</label>
+        <input type="text" id="youtube-url" placeholder="Enter video URL">
+        <button onclick="embedVideo()">Embed Video</button>
+    </div>
+
+    <div id="video-container">
+        <!-- Video will be displayed here -->
+    </div>
+
+    <script>
+        function embedVideo() {
+            const videoUrl = document.getElementById("youtube-url").value;
+            
+            // Extract the video ID from the URL
+            const videoId = getYouTubeVideoId(videoUrl);
+
+            if (videoId) {
+                const iframe = document.createElement("iframe");
+                iframe.src = `https://www.youtube.com/embed/${videoId}`;
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"; // Add fullscreen permission
+                iframe.allowfullscreen = true; // Allow fullscreen mode
+
+                // Clear previous video and append the new one
+                const videoContainer = document.getElementById("video-container");
+                videoContainer.innerHTML = "";
+                videoContainer.appendChild(iframe);
+            } else {
+                alert("Please enter a valid YouTube URL.");
+            }
+        }
+
+        function getYouTubeVideoId(url) {
+            // Regular expression to extract video ID from the URL
+            const regExp = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/\S+\/|\S+\?v=|\S+&v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regExp);
+            return match ? match[1] : null;
+        }
+    </script>
+</body>
+</html>
