@@ -3,47 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player</title>
+    <title>Player!</title>
     <style>
         /* Styling for video container */
-        #video-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-        iframe {
-            border: none;
-            width: 560px;
-            height: 315px;
-        }
-        input[type="text"] {
-            padding: 8px;
-            width: 300px;
-            margin-right: 10px;
-        }
-        button {
-            padding: 8px 16px;
-            cursor: pointer;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        button:hover {
+       
+        /* button:hover {
             background-color: #ff6347;
-        }
+        } */
+
+        /* Body Styling */
+body {
+    background-color: whitesmoke;
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Ensure full height of the viewport */
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+}
+
+/* Container Styling */
+#container {
+    background-color: white;
+    border-radius: 10px; /* Rounded corners */
+    padding: 30px;
+    width: 80%; /* Use relative width for better responsiveness */
+    max-width: 600px; /* Max width to ensure it doesn't get too large */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow around the container */
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center contents inside */
+    justify-content: center; /* Center contents vertically */
+}
+
+/* Additional styling for input and button */
+input[type="text"] {
+    padding: 12px;
+    width: 80%;
+    margin-bottom: 20px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+button {
+    padding: 12px 20px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: tomato;
+}
+
+/* Video container styling */
+#video-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+iframe {
+    border: none;
+    width: 100%;
+    height: 450px;
+    max-width: 800px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+iframe:hover {
+    transform: scale(1.05);
+}
+
     </style>
 </head>
 <body>
-    <div>
-        <label for="youtube-url">Enter YouTube Video URL:</label>
-        <input type="text" id="youtube-url" placeholder="Enter video URL">
-        <button onclick="embedVideo()">Play Video</button>
-    </div>
+    <div id="container">
+        <div>
+            <label for="youtube-url">Enter YouTube Video URL:</label>
+            <input type="text" id="youtube-url" placeholder="Enter video URL">
+            <button onclick="embedVideo()">Get Video</button>
+        </div>
 
-    <div id="video-container">
-        <!-- Video will be displayed here -->
+        <div id="video-container">
+            <!-- Video will be displayed here -->
+        </div>
     </div>
 
     <script>
