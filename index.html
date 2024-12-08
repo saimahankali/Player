@@ -3,14 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player!</title>
+    <title>YouTube Video Popup</title>
     <style>
-        /* Styling for video container */
-       
-        /* button:hover {
-            background-color: #ff6347;
-        } */
-
+        /* Styling the body */
         /* Body Styling */
 body {
     background-color: whitesmoke;
@@ -36,106 +31,118 @@ body {
     justify-content: center; /* Center contents vertically */
 }
 
-/* Additional styling for input and button */
-input[type="text"] {
-    padding: 12px;
-    width: 80%;
-    margin-bottom: 20px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-}
 
-input[type="text"]:focus {
-    border-color: #007BFF;
-    outline: none;
-}
+        input[type="text"] {
+            padding: 10px;
+            width: 70%;
+            margin-right: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
 
-button {
-    padding: 12px 20px;
-    background-color: #007BFF;
-    color: white;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+        input[type="text"]:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
 
-button:hover {
-    background-color: tomato;
-}
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
 
-/* Video container styling */
-#video-container {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    animation: fadeIn 1s forwards;
-}
+        button:hover {
+            background-color: tomato;
+        }
 
-/* Fade-in animation */
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
+        /* Styling for modal */
+        #video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
 
-iframe {
-    border: none;
-    width: 100%;
-    height: 450px;
-    max-width: 800px;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
-}
+        #video-modal iframe {
+            width: 80%;
+            max-width: 800px;
+            height: 450px;
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
 
-iframe:hover {
-    transform: scale(1.05);
-}
+        /* Close button for modal */
+        #video-modal .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-weight: bold;
+        }
 
+        #video-modal .close-btn:hover {
+            color: #ff6347;
+        }
     </style>
 </head>
 <body>
     <div id="container">
-        <div>
-            <label for="youtube-url">Enter YouTube Video URL:</label>
-            <input type="text" id="youtube-url" placeholder="Enter video URL">
-            <button onclick="embedVideo()">Get Video</button>
-        </div>
+        <label for="youtube-url">Enter YouTube Video URL:</label><br>
+        <input type="text" id="youtube-url" placeholder="Enter video URL">
+        <button onclick="showVideoPopup()">Show Video</button>
+    </div>
 
-        <div id="video-container">
-            <!-- Video will be displayed here -->
-        </div>
+    <!-- Modal for Video -->
+    <div id="video-modal">
+        <button class="close-btn" onclick="closeModal()">×</button>
+        <iframe id="video-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
 
     <script>
-        function embedVideo() {
+        function showVideoPopup() {
             const videoUrl = document.getElementById("youtube-url").value;
-            
+
             // Extract the video ID from the URL
             const videoId = getYouTubeVideoId(videoUrl);
 
             if (videoId) {
-                const iframe = document.createElement("iframe");
+                // Set the iframe source to the YouTube embed URL
+                const iframe = document.getElementById("video-iframe");
                 iframe.src = `https://www.youtube.com/embed/${videoId}`;
-                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"; // Add fullscreen permission
-                iframe.allowfullscreen = true; // Allow fullscreen mode
 
-                // Clear previous video and append the new one
-                const videoContainer = document.getElementById("video-container");
-                videoContainer.innerHTML = "";
-                videoContainer.appendChild(iframe);
+                // Show the modal
+                const modal = document.getElementById("video-modal");
+                modal.style.display = "flex";
             } else {
                 alert("Please enter a valid YouTube URL.");
             }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("video-modal");
+            modal.style.display = "none";
+
+            // Clear the iframe source to stop the video
+            const iframe = document.getElementById("video-iframe");
+            iframe.src = "";
         }
 
         function getYouTubeVideoId(url) {
